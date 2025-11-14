@@ -9,19 +9,19 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name = "hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name = "hibernate.connection.driver_class">org.sqlite.JDBC</property>
-        <!-- Assume test is the database name -->
-        <property name="hibernate.show_sql">false</property> <!-- Zmień na false -->
-        <property name="hibernate.format_sql">false</property>
 
-        <!-- Wyłącz niepotrzebne logi -->
-        <property name="hibernate.jdbc.batch_size">5</property> <!-- Do logowania -->
-        <property name="hibernate.order_inserts">true</property>  <!-- Do logowania -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
 
-        <!-- DDL auto -->
+
+        <property name="hibernate.jdbc.batch_size">5</property>
+        <property name="hibernate.order_inserts">true</property>
+
+
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name = "hibernate.connection.url">jdbc:sqlite:database.db</property>
         <mapping class="org.example.DataBase.Players"/>
-        <!-- List of XML mapping files -->
+
 
 
     </session-factory>
