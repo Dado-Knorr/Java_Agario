@@ -9,7 +9,7 @@ import org.example.Gui.Window;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws Exception {
-
+//
 //        Players db = new Players("test586",999);
 //        Players db1 = new Players("test66",1);
 //        Players db2 = new Players("test54",2);
