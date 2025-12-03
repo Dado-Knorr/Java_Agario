@@ -7,14 +7,14 @@ import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import org.example.Actors.Client;
+import org.example.GameLoop.GameLoop;
 
 
 public class Window extends Application {
     private Stage primaryStage;
     private GridPane root = new GridPane();
-    private GameLoop currentGame;
-
-
+    private Client currentGame;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -28,11 +28,9 @@ public class Window extends Application {
         VBox buttonContainer = new VBox(10);
 
         TextField playerNameField = new TextField();
-
         playerNameField.setPromptText("Wpisz swoj nick");
 
         Button startGame = new Button("Start Game");
-        //akcja po nacisnieciu przycisku
         startGame.setOnAction(e -> {
             String name = playerNameField.getText().trim();
             if (!name.isEmpty()) {
@@ -41,7 +39,6 @@ public class Window extends Application {
         });
 
         Button rankingButton = new Button("Ranking");
-
         rankingButton.setOnAction(e -> {
             new RankingWindow(primaryStage).show();
         });
@@ -49,7 +46,7 @@ public class Window extends Application {
         startGame.setMaxWidth(Double.MAX_VALUE);
         rankingButton.setMaxWidth(Double.MAX_VALUE);
 
-        buttonContainer.getChildren().addAll(playerNameField,startGame,  rankingButton);
+        buttonContainer.getChildren().addAll(playerNameField, startGame, rankingButton);
 
         root.add(buttonContainer, 0, 0);
 
@@ -58,7 +55,7 @@ public class Window extends Application {
 
         stage.setOnCloseRequest(e -> {
             if (currentGame != null) {
-                currentGame.cleanup();
+                currentGame.disconnect();
             }
         });
         stage.show();
@@ -67,11 +64,12 @@ public class Window extends Application {
     private void startGame(String playerName) {
         Pane gameRoot = new Pane();
         Scene gameScene = new Scene(gameRoot, 1200, 900);
-        currentGame = new GameLoop(gameRoot, playerName,primaryStage);
+
+        // Tworzenie klienta (gracza) zamiast GameLoop
+        currentGame = new Client("localhost", 5555, playerName, gameRoot);
 
         primaryStage.setScene(gameScene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
-
-
 }

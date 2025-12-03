@@ -11,6 +11,7 @@ public class Player {
     private Color color;
     private double size = 25;
     private Integer eatenFood = 0;
+    private  Integer maxSize = 150;
 
     private Circle circle;
 
@@ -91,5 +92,12 @@ public class Player {
         this.color = color;
     }
 
+    public Integer getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
+    }
 }
 
