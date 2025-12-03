@@ -71,7 +71,6 @@ public class Server {
     }
 
     public static void handlePlayerCollision(String eater, String eaten) {
-        // Logika kolizji między graczami (serwer autoryzuje)
         if (players.containsKey(eater) && players.containsKey(eaten)) {
             PlayerData eaterData = players.get(eater);
             PlayerData eatenData = players.get(eaten);
@@ -80,7 +79,7 @@ public class Server {
             players.remove(eaten);
 
             // Powiadomienie klientów
-            String collisionMessage = "COLLISION:" + eater + ":" + eaten;
+            String collisionMessage = "COLLISION:" + eater + ":" + eaten + ":" + eaterData.size;
             for (ClientHandler client : clients) {
                 client.sendMessage(collisionMessage);
             }

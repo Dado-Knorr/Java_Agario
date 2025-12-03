@@ -179,18 +179,40 @@ public class Client {
                 break;
 
             case "COLLISION":
-                // Format: COLLISION:eater:eaten
-                if (parts.length == 3) {
-                    javafx.application.Platform.runLater(() -> {
-                        Player eaten = remotePlayers.get(parts[2]);
-                        if (eaten != null) {
-                            gameRoot.getChildren().remove(eaten.getCircle());
-                            remotePlayers.remove(parts[2]);
+                // Format: COLLISION:eater:eaten:newSize
+                if (parts.length == 4) {
+                    String eater = parts[1];
+                    String eaten = parts[2];
+                    double newSize = Double.parseDouble(parts[3]);
+
+                    Platform.runLater(() -> {
+                        // Jeśli zjedzony gracz to my (lokalny gracz), to przegrywamy
+                        if (eaten.equals(playerName)) {
+                            // Gracz został zjedzony - koniec gry
+                            System.out.println("Zostałeś zjedzony przez: " + eater);
+                            // Możemy wyświetlić komunikat i wrócić do menu
+                            disconnect();
+                            // ... kod do obsługi powrotu do menu
                         }
 
-                        // Jeśli to nasz gracz zjadł kogoś
-                        if (parts[1].equals(playerName)) {
-                            localPlayer.setSize(localPlayer.getSize() + 10);
+                        // Usuń zjedzonego gracza
+                        Player eatenPlayer = remotePlayers.get(eaten);
+                        if (eatenPlayer != null) {
+                            gameRoot.getChildren().remove(eatenPlayer.getCircle());
+                            remotePlayers.remove(eaten);
+                        }
+
+                        // Aktualizuj rozmiar gracza, który zjadł
+                        if (eater.equals(playerName)) {
+                            // To my zjedliśmy kogoś - aktualizuj lokalny rozmiar
+                            localPlayer.setSize(newSize);
+                        } else {
+                            // Ktoś inny zjadł - aktualizuj zdalny gracz
+                            Player eaterPlayer = remotePlayers.get(eater);
+                            if (eaterPlayer != null) {
+                                eaterPlayer.setSize(newSize);
+                                eaterPlayer.getCircle().setRadius(newSize);
+                            }
                         }
                     });
                 }
@@ -269,11 +291,9 @@ public class Client {
 
             if (distance < (localPlayer.getSize() + otherPlayer.getSize())) {
                 if (localPlayer.getSize() > otherPlayer.getSize() * 1.1) {
-                    // Nasz gracz jest większy - zjada przeciwnika
-                    localPlayer.setSize(localPlayer.getSize() + otherPlayer.getSize() * 0.5);
-                    gameRoot.getChildren().remove(otherPlayer.getCircle());
-                    remotePlayers.remove(entry.getKey());
+                    // Wysyłamy do serwera informację o kolizji, ale nie usuwamy gracza lokalnie
                     sendEatEvent(entry.getKey());
+                    // Możemy przerwać pętlę, bo jednocześnie możemy zjeść tylko jednego gracza
                     break;
                 }
             }
