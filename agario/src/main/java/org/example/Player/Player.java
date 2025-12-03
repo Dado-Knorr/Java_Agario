@@ -46,6 +46,26 @@ public class Player {
         eatenFood++;
     }
 
+    public Double getXx() {
+        return xx;
+    }
+
+    public void setXx(Double xx) {
+        this.xx = xx;
+    }
+
+    public Double getYy() {
+        return yy;
+    }
+
+    public void setYy(Double yy) {
+        this.yy = yy;
+    }
+
+    public void setSize(double size)
+    {
+        this.size = size;
+    }
     public double getSize()
     {
         return size;
@@ -62,5 +82,14 @@ public class Player {
     {
         return eatenFood;
     }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }
 

@@ -1,8 +1,6 @@
 package org.example;
 
 import javafx.application.Application;
-import org.example.DataBase.ManageDataBase;
-import org.example.DataBase.Players;
 import org.example.Gui.Window;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or

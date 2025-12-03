@@ -28,7 +28,7 @@ public class ManageDataBase
     {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
-        boolean check = true;
+        boolean check = false;
 
         try
         {
@@ -36,7 +36,7 @@ public class ManageDataBase
             String hql = "Select p from Players p where p.playerName =:name";
             Players player = session.createSelectionQuery(hql, Players.class).setParameter("name", playerName).uniqueResult();
             transaction.commit();
-            if(player == null) check = false;
+            if(player != null) check = true;
         }
         catch (Exception e)
         {
