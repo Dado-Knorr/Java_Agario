@@ -24,7 +24,7 @@ public class ManageDataBase
         }
     }
 
-    private boolean ifPlayerNameIsFree(String playerName)
+    public boolean ifPlayerNameIsFree(String playerName)
     {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;

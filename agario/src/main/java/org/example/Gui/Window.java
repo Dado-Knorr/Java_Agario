@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import org.example.Actors.Client;
 import org.example.GameLoop.GameLoop;
 
+import java.io.IOException;
+
 
 public class Window extends Application {
     private Stage primaryStage;
@@ -65,9 +67,14 @@ public class Window extends Application {
         Pane gameRoot = new Pane();
         Scene gameScene = new Scene(gameRoot, 1200, 900);
 
-        // Tworzenie klienta (gracza) zamiast GameLoop
-        currentGame = new Client("192.168.1.66", 5555, playerName, gameRoot);
 
+        try {
+            // Tworzenie klienta (gracza) zamiast GameLoop
+            currentGame = new Client("192.168.1.66", 5555, playerName, gameRoot);
+        } catch (IOException e) {
+
+            return;
+        }
         primaryStage.setScene(gameScene);
         primaryStage.setResizable(false);
         primaryStage.show();

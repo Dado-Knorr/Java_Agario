@@ -1,6 +1,8 @@
 package org.example.Actors;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import org.example.DataBase.ManageDataBase;
 import org.example.Player.Player;
 import org.example.Food.Food;
@@ -26,7 +28,7 @@ public class Client {
     private javafx.animation.AnimationTimer gameLoop;
     private double mouseX, mouseY;
 
-    public Client(String host, int port, String playerName, Pane gameRoot) {
+    public Client(String host, int port, String playerName, Pane gameRoot) throws IOException {
         this.playerName = playerName;
         this.gameRoot = gameRoot;
 
@@ -42,6 +44,24 @@ public class Client {
             // Wysyłanie nazwy gracza do serwera
             out.println(playerName);
 
+            // Oczekiwanie na odpowiedź serwera
+            String response = in.readLine();
+            if (response != null && response.equals("NAME_TAKEN")) {
+                socket.close();
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Nazwa zajęta");
+                    alert.setContentText("Nazwa gracza '" + playerName + "' jest już zajęta. Wybierz inną nazwę.");
+                    alert.showAndWait();
+                });
+                throw new IOException("Nazwa zajęta");
+            }
+
+            if (response == null || !response.equals("NAME_ACCEPTED")) {
+                socket.close();
+                throw new IOException("Nieprawidłowa odpowiedź serwera");
+            }
             // Tworzenie lokalnego gracza
             Color color = Color.rgb(
                     random.nextInt(256),
@@ -64,7 +84,7 @@ public class Client {
             startGameLoop();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
     public void sendScoreToServer() {
@@ -88,7 +108,7 @@ public class Client {
     }
 
     private void startGameLoop() {
-        gameLoop = new javafx.animation.AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 // Aktualizacja pozycji gracza w kierunku myszy

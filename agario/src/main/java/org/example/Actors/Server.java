@@ -37,6 +37,7 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -114,14 +115,38 @@ public class Server {
 
                 // Odbieranie nazwy gracza
                 playerName = in.readLine();
-                System.out.println("Player connected: " + playerName);
+                System.out.println("Player trying to connect: " + playerName);
 
-                // Wysyłanie istniejących graczy
+                // Sprawdź czy nazwa jest zajęta (wśród aktualnych graczy)
                 synchronized(players) {
+                    if (players.containsKey(playerName)) {
+                        // Nazwa już jest używana przez innego gracza
+                        out.println("NAME_TAKEN");
+                        socket.close();
+                        System.out.println("Nazwa " + playerName + " odrzucona - już w użyciu");
+                        return;
+                    }
+
+                    // Sprawdź w bazie danych czy nazwa jest zajęta
+                    if (databaseManager.ifPlayerNameIsFree(playerName)) {
+                        // Nazwa jest już w bazie danych
+                        out.println("NAME_TAKEN");
+                        socket.close();
+                        System.out.println("Nazwa " + playerName + " odrzucona - już w bazie");
+                        return;
+                    }
+
+                    // Nazwa dostępna
+                    out.println("NAME_ACCEPTED");
+                    System.out.println("Player connected: " + playerName);
+
+                    // Wysyłanie istniejących graczy do nowego klienta
                     for (Map.Entry<String, PlayerData> entry : players.entrySet()) {
-                        PlayerData data = entry.getValue();
-                        sendMessage("NEW_PLAYER:" + entry.getKey() + ":" +
-                                data.x + ":" + data.y + ":" + data.size);
+                        if (!entry.getKey().equals(playerName)) {
+                            PlayerData data = entry.getValue();
+                            sendMessage("NEW_PLAYER:" + entry.getKey() + ":" +
+                                    data.x + ":" + data.y + ":" + data.size);
+                        }
                     }
 
                     // Dodanie nowego gracza
