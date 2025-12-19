@@ -1,16 +1,18 @@
 package org.example.Gui;
 
+import java.io.IOException;
+
+import org.example.Actors.Client;
+
 import javafx.application.Application;
 import javafx.scene.Cursor;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.Actors.Client;
-import org.example.GameLoop.GameLoop;
-
-import java.io.IOException;
 
 
 public class Window extends Application {

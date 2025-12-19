@@ -1,17 +1,24 @@
 package org.example.Actors;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.example.Food.Food;
+import org.example.Player.Player;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import org.example.DataBase.ManageDataBase;
-import org.example.Player.Player;
-import org.example.Food.Food;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.Random;
 
 public class Client {
     private Socket socket;
