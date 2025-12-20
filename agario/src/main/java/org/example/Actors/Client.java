@@ -281,7 +281,7 @@ public class Client {
                     localPlayer.getXx(),
                     localPlayer.getYy(),
                     localPlayer.getSize());
-            out.println(message);
+            out.println(message.replace(",","."));
         }
     }
 

@@ -8,7 +8,7 @@ import java.net.*;
 import java.util.*;
 
 public class Server {
-    private static final int PORT = 5555;
+    private static final int PORT = 5557;
     private static List<ClientHandler> clients = new ArrayList<>();
     private static Map<String, PlayerData> players = new HashMap<>();
     private static ManageDataBase databaseManager;
@@ -165,6 +165,7 @@ public class Server {
                         // Format: MOVE:name:x:y:size
                         String[] parts = message.split(":");
                         if (parts.length == 5) {
+                            System.out.println(parts);
                             updatePlayerPosition(parts[1],
                                     Double.parseDouble(parts[2]),
                                     Double.parseDouble(parts[3]),
