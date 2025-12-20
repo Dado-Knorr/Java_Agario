@@ -72,7 +72,7 @@ public class Window extends Application {
 
         try {
             // Tworzenie klienta (gracza) zamiast GameLoop
-            currentGame = new Client("localhost", 5557, playerName, gameRoot);
+            currentGame = new Client("192.168.1.49", 5557, playerName, gameRoot);
         } catch (IOException e) {
 
             return;
